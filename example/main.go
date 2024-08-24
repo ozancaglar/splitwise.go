@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/anvari1313/splitwise.go"
+	"github.com/ozancaglar/splitwise.go"
 )
 
 func main() {
