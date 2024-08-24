@@ -494,7 +494,7 @@ func TestClient_GetExpenseCurrentUser(t *testing.T) {
 			client:       http.DefaultClient,
 		}
 
-		_, err := c.Expenses(context.Background())
+		_, err := c.Expenses(context.Background(), []string{})
 
 		if err != nil {
 			t.Fatal(err)

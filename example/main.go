@@ -72,7 +72,7 @@ func friendsExamples(client splitwise.Client) {
 }
 
 func expensesExamples(client splitwise.Client) {
-	expensesRes, err := client.Expenses(context.Background())
+	expensesRes, err := client.Expenses(context.Background(), []string{})
 	if err != nil {
 		panic(err)
 	}

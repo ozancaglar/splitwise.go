@@ -8,12 +8,13 @@ import (
 	"net/http"
 	"reflect"
 	"strconv"
+	"strings"
 )
 
 // Expenses contains method to work with expense resource
 type Expenses interface {
 	// Expenses returns current user's expenses
-	Expenses(ctx context.Context) ([]ExpenseResponse, error)
+	Expenses(ctx context.Context, params []string) ([]ExpenseResponse, error)
 
 	// ExpenseByID returns info about an expense choose by id
 	ExpenseByID(ctx context.Context, id uint64) (ExpenseResponse, error)
@@ -231,15 +232,21 @@ func (c client) CreateExpenseByShare(ctx context.Context, expense Expense, users
 	return response.Expenses, nil
 }
 
-func (c client) Expenses(ctx context.Context) ([]ExpenseResponse, error) {
-	url := c.baseURL + "/api/v3.0/get_expenses"
+func (c client) Expenses(ctx context.Context, params []string) ([]ExpenseResponse, error) {
+	baseURL := c.baseURL + "/api/v3.0/get_expenses"
+
+	// Append query parameters to the URL
+	if len(params) > 0 {
+		queryParams := strings.Join(params, "&")
+		baseURL += "?" + queryParams
+	}
 
 	token, err := c.AuthProvider.Auth()
 	if err != nil {
 		return nil, err
 	}
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, baseURL, nil)
 	if err != nil {
 		return nil, err
 	}
